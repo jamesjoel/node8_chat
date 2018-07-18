@@ -14,9 +14,32 @@
 	<script type="text/javascript">
 		var io = io.connect();
 
+		var user=[];
 		io.on("online", function(data){
-			console.log(data)
+			user=data;
+			document.getElementById("online-user").innerHTML="";
+			for(var k in data){
+				
+			}
+			// data.forEach(function(item, i){
+			// 	document.getElementById("online-user").innerHTML += "<a href='#' onclick='getUser("+i+")' class='list-group-item'>"+item+"</a>";
+			// });
 		});
+
+		function getUser(x)
+		{
+			var getname=user[x];
+			document.getElementById("show-name").innerHTML=getname;
+
+		}
+		function send()
+		{
+			var msg = document.getElementById("msg").value;
+			var rec = document.getElementById("show-name").innerHTML;
+
+			var sendObj = { msg : msg, rec : rec };
+			io.emit("message", sendObj);
+		}
 	</script>
 </head>
 <body>
@@ -24,6 +47,17 @@
 <br />
 <div class="col-md-4 col-sm-4">
 	<h3>Online User</h3>
+	<div class="list-group" id="online-user">
+	</div>
+</div>
+<div class="col-sm-8 col-md-8">
+	<h2>Chat With <span  class="label label-primary" id="show-name"></span></h2>
+	<hr />
+	<div class="well col-md-12" style="min-height: 400px; background-color: #CCC;">
+
+	</div>
+	<input type="Text" id="msg" placeholder="Your Message" class="form-control">
+	<button class="btn btn-success" onclick="send()">Send</button>
 </div>
 
 </body>
